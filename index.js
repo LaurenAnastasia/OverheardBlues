@@ -1,6 +1,6 @@
 const myCanvas = { width: 600, height: 600};
 const backgroundColor = [230,220,190];
-const soundArrays = [[],[],[],[]]];
+const soundArrays = [[],[],[],[]];
 //will control whether loop runs or not
 let looping = false;
 // a boolean variable to let us know if a sound is playing
@@ -22,7 +22,7 @@ function preload(){
     while(true){
         i = 0;
         try {
-            soundArrays[i/2][i%2] = new Howl({ src : [`sounds/${codes[i]+i}.mp3`]});
+            soundArrays[i/2][i%2] = new Howl({ src : [`sounds/${codes[i]+"_"+i}.mp3`]});
             i = i + 1;
         } catch(err) {
             console.log(codes[i] + " is done. Moving to next");
@@ -125,16 +125,10 @@ function pickNewBuffer(){
 
     //sound arrays has two arrays in it so first we choose which array 
     //and then which sound from that array
-   return soundArrays[0][respArray][randomSoundFromArray];
+   return soundArrays[0][resp][randomSoundFromArray];
 }
 
 function playSound(sound){
     sound.play();
     soundIsPlaying = true;
 }
-
-//we don't need this because we have an event listener from Howler to listen for the end of a file
-// function checkPlayingSound(sound){
-//     console.log(sound);
-//     return sound.isPlaying()
-// }
