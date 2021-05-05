@@ -5,6 +5,7 @@ const soundArrays = {};
 let looping = false;
 // a boolean variable to let us know if a sound is playing
 let soundIsPlaying  = false;
+let bufferIsPlaying = false;
 //and a variable to store the actual sound playing, or the 
 // representation of it so we can check if it's done playing yet.
 let soundPlaying = null;
@@ -12,7 +13,6 @@ let soundPlaying = null;
 let lastArrayPlayed = 1;
 //a start and pause button because, you know, web audio wants user input
 let button1, button2;
-bufferIsPlaying = false;
 let resp = 1;
 let respArrays = soundArrays;
 
@@ -49,9 +49,9 @@ function draw(){
     
     //check if the loop should run or not; the buttons set this value
     if(looping){
-
+        console.log("Frame fired");
         if(!bufferIsPlaying){
-            if (Math.random()*100 == 1){
+            if (Math.floor(Math.random()*100) == 1){
                 bufferPlaying = pickNewBuffer();
                 playBuffer(bufferPlaying);
                 bufferPlaying.on('end', () => {
