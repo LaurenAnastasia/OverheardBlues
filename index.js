@@ -22,8 +22,13 @@ function preload(){
     let i = 0;
     while(true){
         try {
+            console.log("Loading: " + codes[i]+"_"+i+".mp3");
             soundArrays[i/2][i%2] = new Howl({ src : [`sounds/${codes[i]+"_"+i}.mp3`]});
             i = i + 1;
+            if (i >= 100){
+                console.log("Kill switch");
+                break;
+            }
         } catch(err) {
             console.log(codes[i] + " is done. Moving to next");
             mode = mode + 1;
