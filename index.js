@@ -1,3 +1,124 @@
+// //we don't really need this canvas but it's here in case
+// //we want to say display some text....
+// const myCanvas = { width: 600, height: 600};
+// const backgroundColor = [230,220,190];
+// // two arrays, each has three sounds in it
+// const numArrays = 2;
+// const numSoundsPerArray = 4;
+// // initialize our arrays
+// const sounds1 = Array.from({ length: numSoundsPerArray });
+// const sounds2 = Array.from({ length: numSoundsPerArray });
+// // let's make an array of the two arrays so we can easily switch between them
+// const soundArrays = [sounds1, sounds2];
+// //will control whether loop runs or not
+// let looping = false;
+// // a boolean variable to let us know if a sound is playing
+// let soundIsPlaying  = false;
+// //and a variable to store the actual sound playing, or the 
+// // representation of it so we can check if it's done playing yet.
+// let soundPlaying = null;
+// // we'll switch between 0 and 1 here, so we can pick which array to play from
+// let lastArrayPlayed = 1;
+// //a start and pause button because, you know, web audio wants user input
+// let button1, button2;
+
+// function preload(){
+//     ///load three sounds
+//     sounds1.forEach((sound, i) => {
+//         //sounds1[i] = loadSound(`sounds/${i}.mp3`)
+//         //let's use howler instead of the buggy p5.sound
+//         sounds1[i] = new Howl({ src : [`sounds/${i}.mp3`]})
+//     })
+//     //load three more sounds, notice that the number starts where the other one left off
+//     sounds2.forEach((sound, i) => {
+//         //sounds2[i] = loadSound(`sounds/${i + sounds1.length}.mp3`)
+//                 //let's use howler instead of the buggy p5.sound
+//                 sounds2[i] = new Howl({ src : [`sounds/${i + sounds1.length}.mp3`]})
+//     })
+
+//     button1 = createButton('click to start');
+//     button1.mousePressed(startRoutine)
+//     button2 = createButton('click to pause');
+//     button2.mousePressed(pauseRoutine)
+
+// }
+
+// function setup(){
+//     createCanvas(myCanvas.width, myCanvas.height);
+//     background(backgroundColor);   
+// }
+
+
+
+// function draw(){
+    
+//     background(backgroundColor);
+    
+//     //check if the loop should run or not; the buttons set this value
+//     if(looping){
+    
+//         //check if a sound is playing
+//         if(!soundIsPlaying){
+
+//             //our pickNewSound function returns a new sound
+//             soundPlaying = pickNewSound();
+
+//             playSound(soundPlaying)
+//             //Howler gives us an event listener that waits for the end of a sound
+//             soundPlaying.on('end', () => {
+//                soundPlaying = null,
+//                soundIsPlaying = false;
+//               });
+//         }
+//     }
+
+
+// }
+
+// function startRoutine(){
+//     looping = true;
+// }
+
+// function pauseRoutine(){
+//     looping = false;
+// }
+
+
+// function pickNewSound(){
+//     // pick a sound here, this is where we need to set up our algorithm
+//     // to 'randomly' pick a sound 
+
+//     //const randomArray = Math.floor(Math.random() * numArrays);
+//     const nextArray = lastArrayPlayed > 0 ? 0 : 1;
+//     lastArrayPlayed = lastArrayPlayed > 0 ? 0 : 1;
+//     console.log(lastArrayPlayed);
+//     //this is the same as saying
+//     //let nextArray;
+//     // if(lasArrayPlayed > 0){
+//     //    nextArray = 0;
+//     //     } else {
+//     //         nextArray = 1
+//     //     }
+//     //}
+//     const randomSoundFromArray = Math.floor(Math.random() * numSoundsPerArray)
+
+//     //sound arrays has two arrays in it so first we choose which array 
+//     //and then which sound from that array
+//    return soundArrays[nextArray][randomSoundFromArray];
+    
+// }
+
+// function playSound(sound){
+//     sound.play();
+//     soundIsPlaying = true;
+// }
+
+// //we don't need this because we have an event listener from Howler to listen for the end of a file
+// // function checkPlayingSound(sound){
+// //     console.log(sound);
+// //     return sound.isPlaying()
+// // }
+
 //we don't really need this canvas but it's here in case
 //we want to say display some text....
 const myCanvas = { width: 600, height: 600};
@@ -21,6 +142,9 @@ let soundPlaying = null;
 let lastArrayPlayed = 1;
 //a start and pause button because, you know, web audio wants user input
 let button1, button2;
+bufferIsPlaying = false;
+let resp = 1;
+let respArrays = soundArrays;
 
 function preload(){
     ///load three sounds
@@ -51,18 +175,24 @@ function setup(){
 
 
 function draw(){
-    
     background(backgroundColor);
     
     //check if the loop should run or not; the buttons set this value
     if(looping){
-    
-        //check if a sound is playing
-        if(!soundIsPlaying){
 
+        if(!bufferIsPlaying){
+          if (Math.random()*100 == 1){
+            bufferPlaying = pickNewBuffer();
+            playBuffer(bufferPlaying);
+            bufferPlaying.on('end', () => {
+              bufferIsPlaying = false;
+            });
+        }
+    }
+
+        if(!soundIsPlaying){
             //our pickNewSound function returns a new sound
             soundPlaying = pickNewSound();
-
             playSound(soundPlaying)
             //Howler gives us an event listener that waits for the end of a sound
             soundPlaying.on('end', () => {
@@ -70,10 +200,16 @@ function draw(){
                soundIsPlaying = false;
               });
         }
+
+    } else {
+      //logic to stop playing sounds
     }
-
-
 }
+
+function playBuffer(sound){
+    sound.play()
+    bufferIsPlaying = true;
+  }
 
 function startRoutine(){
     looping = true;
@@ -106,6 +242,18 @@ function pickNewSound(){
     //and then which sound from that array
    return soundArrays[nextArray][randomSoundFromArray];
     
+}
+
+function pickNewBuffer(){
+    //logic to pick which buffer to select from
+    let resp = lastArrayPlayed > 0 ? 0 : 1;
+
+    
+    const randomSoundFromArray = Math.floor(Math.random() * numSoundsPerArray)
+
+    //sound arrays has two arrays in it so first we choose which array 
+    //and then which sound from that array
+   return respArrays[respArray][randomSoundFromArray];
 }
 
 function playSound(sound){
