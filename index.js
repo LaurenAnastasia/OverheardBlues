@@ -1,6 +1,8 @@
 const myCanvas = { width: 600, height: 600};
 const backgroundColor = [230,220,190];
 const soundArrays = {};
+const FPS = 60; //fps
+const interruptTimer = 10; //in seconds
 //will control whether loop runs or not
 let looping = false;
 // a boolean variable to let us know if a sound is playing
@@ -16,20 +18,21 @@ let button1, button2;
 let resp = 1;
 let respArrays = soundArrays;
 
+//parallel arrays
 const lims = [2,1,5,7];
 const codes = ["FL","FR","DL","DR"];
 
 function preload(){
-    console.log("Zero");
+    //2d array. First layer is for each code, second is for how many of that code
     for (i = 0; i < codes.length; i++){
+        //initialize empty array for 2d dict
         soundArrays[codes[i]] = [];
         for (j = 0; j < lims[i]; j++){
+            //some BULLSHIT loading. I hate Howl.
             let snd = new Howl({ src : [`sounds/${codes[i]+"_"+j}.mp3`]})
             soundArrays[codes[i]].push(snd);
         }
     }
-    console.table(soundArrays[0]);
-    console.table(soundArrays[1]);
 
     button1 = createButton('click to start');
     button1.mousePressed(startRoutine)
@@ -42,18 +45,23 @@ function setup(){
     background(backgroundColor);   
 }
 
-
-
 function draw(){
     background(backgroundColor);
     
     //check if the loop should run or not; the buttons set this value
     if(looping){
-        console.log("Frame fired");
+        
+        //debounce
         if(!bufferIsPlaying){
-            if (Math.floor(Math.random()*100) == 1){
+
+            //Random check for buffers :)))
+            if (Math.floor(Math.random()*interruptTimer*FPS) == 1){
+
+                //Select new buffer
                 bufferPlaying = pickNewBuffer();
                 playBuffer(bufferPlaying);
+
+                //Ending sequence
                 bufferPlaying.on('end', () => {
                     bufferPlaying = null,
                     bufferIsPlaying = false;
@@ -61,6 +69,7 @@ function draw(){
             }
         }
 
+        //debounce
         if(!soundIsPlaying){
             //our pickNewSound function returns a new sound
             soundPlaying = pickNewSound();
@@ -73,13 +82,18 @@ function draw(){
         }
 
     } else {
-      //logic to stop playing sounds
+      //logic to stop playing sounds add in future
     }
 }
 
 function playBuffer(sound){
     sound.play()
     bufferIsPlaying = true;
+  }
+
+  function playSound(sound){
+      sound.play();
+      soundIsPlaying = true;
   }
 
 function startRoutine(){
@@ -92,33 +106,26 @@ function pauseRoutine(){
 
 
 function pickNewSound(){
-    // pick a sound here, this is where we need to set up our algorithm
-    // to 'randomly' pick a sound 
-
+    //Basically just boolean not statement
     lastArrayPlayed = lastArrayPlayed > 0 ? 0 : 1;
     
+    //Chaos for picking a random
     let ran = Math.floor(Math.random() * soundArrays[codes[2+lastArrayPlayed]].length);
 
-    //sound arrays has two arrays in it so first we choose which array 
-    //and then which sound from that array
+    //Printing for debug then return index in SOUNDS.
     console.log("Playing dialogue: "+codes[2+lastArrayPlayed]+" "+ran);
     return soundArrays[codes[2+lastArrayPlayed]][ran];
     
 }
 
 function pickNewBuffer(){
-    //logic to pick which buffer to select from
-    let resp = lastArrayPlayed;
+    //Boolean not statement
+    let resp = lastArrayPlayed > 0 ? 0 : 1;
     
+    //Chaos for picking random
     let ran = Math.floor(Math.random() * soundArrays[codes[resp]].length);
 
-    //sound arrays has two arrays in it so first we choose which array 
-    //and then which sound from that array
+    //Printing for debug then return index in BUFFER.
     console.log("Playing buffer: "+codes[resp]+" "+ran);
     return soundArrays[codes[resp]][ran];
-}
-
-function playSound(sound){
-    sound.play();
-    soundIsPlaying = true;
 }
