@@ -23,7 +23,7 @@ function preload(){
     console.log("Zero");
     for (i = 0; i < codes.length; i++){
         for (j = 0; j < lims[i]; j++){
-            let snd = new Howl({ src : [`sounds/${codes[codes[i]]+"_"+j}.mp3`]})
+            let snd = new Howl({ src : [`sounds/${codes[i]+"_"+j}.mp3`]})
             soundArrays[i/2][i%2].push(snd);
         }
     }
