@@ -17,15 +17,17 @@ let resp = 1;
 let respArrays = soundArrays;
 
 function preload(){
+    console.log("Zero");
     let mode = 0;
     let codes = ["FL","FR","DL","DR"];
     let i = 0;
     while(mode < 4){
         console.log("Loading: " + codes[mode]+"_"+i+".mp3");
         try {
-            soundArrays[mode/2][mode%2].push(new Howl({ src : [`sounds/${codes[mode]+"_"+i}.mp3`]}));
+            let snd = new Howl({ src : [`sounds/${codes[mode]+"_"+i}.mp3`]})
+            soundArrays[mode/2][mode%2].push(snd);
         } catch(err) {
-            i = 0;
+            i = -1;
             mode = mode + 1;
             console.log(codes[i] + " is done. Moving to next");
         }
