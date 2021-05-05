@@ -30,6 +30,7 @@ function preload(){
                 break;
             }
         } catch(err) {
+            i = 0;
             console.log(codes[i] + " is done. Moving to next");
             mode = mode + 1;
             if (mode == 4){
@@ -58,14 +59,15 @@ function draw(){
     if(looping){
 
         if(!bufferIsPlaying){
-          if (Math.random()*100 == 1){
-            bufferPlaying = pickNewBuffer();
-            playBuffer(bufferPlaying);
-            bufferPlaying.on('end', () => {
-              bufferIsPlaying = false;
-            });
+            if (Math.random()*100 == 1){
+                bufferPlaying = pickNewBuffer();
+                playBuffer(bufferPlaying);
+                bufferPlaying.on('end', () => {
+                    bufferPlaying = null,
+                    bufferIsPlaying = false;
+                });
+            }
         }
-    }
 
         if(!soundIsPlaying){
             //our pickNewSound function returns a new sound
@@ -73,9 +75,9 @@ function draw(){
             playSound(soundPlaying)
             //Howler gives us an event listener that waits for the end of a sound
             soundPlaying.on('end', () => {
-               soundPlaying = null,
-               soundIsPlaying = false;
-              });
+                soundPlaying = null,
+                soundIsPlaying = false;
+            });
         }
 
     } else {
@@ -113,24 +115,25 @@ function pickNewSound(){
     //         nextArray = 1
     //     }
     //}
-    const randomSoundFromArray = Math.floor(Math.random() * numSoundsPerArray)
+    let ran = Math.floor(Math.random() * soundArrays[1][nextArray].length);
 
     //sound arrays has two arrays in it so first we choose which array 
     //and then which sound from that array
-   return soundArrays[1][nextArray][randomSoundFromArray];
+    console.log("Playing dialogue: 0 "+resp+" "+ran);
+    return soundArrays[1][nextArray][ran];
     
 }
 
 function pickNewBuffer(){
     //logic to pick which buffer to select from
     let resp = lastArrayPlayed > 0 ? 0 : 1;
-
     
-    const randomSoundFromArray = Math.floor(Math.random() * numSoundsPerArray)
+    let ran = Math.floor(Math.random() * soundArrays[0][resp].length);
 
     //sound arrays has two arrays in it so first we choose which array 
     //and then which sound from that array
-   return soundArrays[0][resp][randomSoundFromArray];
+    console.log("Playing buffer: 0 "+resp+" "+ran);
+    return soundArrays[0][resp][ran];
 }
 
 function playSound(sound){
