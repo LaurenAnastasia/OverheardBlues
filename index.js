@@ -20,22 +20,19 @@ function preload(){
     let mode = 0;
     let codes = ["FL","FR","DL","DR"];
     let i = 0;
-    while(true){
+    while(mode < 4){
+        console.log("Loading: " + codes[mode]+"_"+i+".mp3");
         try {
-            console.log("Loading: " + codes[mode]+"_"+i+".mp3");
             soundArrays[mode/2][mode%2].push(new Howl({ src : [`sounds/${codes[mode]+"_"+i}.mp3`]}));
-            //goes [[[FL],[FR]],[[DL],[DR]]]
-            if (i >= 100){
-                console.log("Kill switch");
-                break;
-            }
         } catch(err) {
             i = 0;
-            console.log(codes[i] + " is done. Moving to next");
             mode = mode + 1;
-            if (mode == 4){
-                break;
-            }
+            console.log(codes[i] + " is done. Moving to next");
+        }
+        i = i + 1;
+        if (i >= 100){
+            console.log("Kill switch");
+            break;
         }
     }
     console.table(soundArrays[0]);
