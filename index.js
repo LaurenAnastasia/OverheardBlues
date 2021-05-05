@@ -1,6 +1,6 @@
 const myCanvas = { width: 600, height: 600};
 const backgroundColor = [230,220,190];
-const soundArrays = [[[null],[null]],[[null],[null]]];
+const soundArrays = [[[],[]],[[],[]]];
 //will control whether loop runs or not
 let looping = false;
 // a boolean variable to let us know if a sound is playing
@@ -24,6 +24,7 @@ function preload(){
         try {
             console.log("Loading: " + codes[i]+"_"+i+".mp3");
             soundArrays[i/2][i%2].push(new Howl({ src : [`sounds/${codes[i]+"_"+i}.mp3`]}));
+            //goes [[[FL],[FR]],[[DL],[DR]]]
             i = i + 1;
             if (i >= 100){
                 console.log("Kill switch");
@@ -38,6 +39,8 @@ function preload(){
             }
         }
     }
+    console.table(soundArrays[0]);
+    console.table(soundArrays[1]);
 
     button1 = createButton('click to start');
     button1.mousePressed(startRoutine)
@@ -107,14 +110,7 @@ function pickNewSound(){
     const nextArray = lastArrayPlayed > 0 ? 0 : 1;
     lastArrayPlayed = lastArrayPlayed > 0 ? 0 : 1;
     console.log(lastArrayPlayed);
-    //this is the same as saying
-    //let nextArray;
-    // if(lasArrayPlayed > 0){
-    //    nextArray = 0;
-    //     } else {
-    //         nextArray = 1
-    //     }
-    //}
+    
     let ran = Math.floor(Math.random() * soundArrays[1][nextArray].length);
 
     //sound arrays has two arrays in it so first we choose which array 
