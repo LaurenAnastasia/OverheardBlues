@@ -1,6 +1,6 @@
 const myCanvas = { width: 600, height: 600};
 const backgroundColor = [230,220,190];
-const soundArrays = [[[],[]],[[],[]]];
+const soundArrays = {};
 //will control whether loop runs or not
 let looping = false;
 // a boolean variable to let us know if a sound is playing
@@ -22,6 +22,7 @@ const codes = ["FL","FR","DL","DR"];
 function preload(){
     console.log("Zero");
     for (i = 0; i < codes.length; i++){
+        soundArrays[codes[i]] = [];
         for (j = 0; j < lims[i]; j++){
             let snd = new Howl({ src : [`sounds/${codes[i]+"_"+j}.mp3`]})
             soundArrays[codes[i]].push(snd);
