@@ -16,25 +16,15 @@ bufferIsPlaying = false;
 let resp = 1;
 let respArrays = soundArrays;
 
+const lims = [2,1,5,7];
+const codes = ["FL","FR","DL","DR"];
+
 function preload(){
     console.log("Zero");
-    let mode = 0;
-    let codes = ["FL","FR","DL","DR"];
-    let i = 0;
-    while(mode < 4){
-        console.log("Loading: " + codes[mode]+"_"+i+".mp3");
-        try {
-            let snd = new Howl({ src : [`sounds/${codes[mode]+"_"+i}.mp3`]})
-            soundArrays[mode/2][mode%2].push(snd);
-        } catch(err) {
-            i = -1;
-            mode = mode + 1;
-            console.log(codes[i] + " is done. Moving to next");
-        }
-        i = i + 1;
-        if (i >= 100){
-            console.log("Kill switch");
-            break;
+    for (i = 0; i < codes.length; i++){
+        for (j = 0; j < lims[i]; j++){
+            let snd = new Howl({ src : [`sounds/${codes[codes[i]]+"_"+j}.mp3`]})
+            soundArrays[i/2][i%2].push(snd);
         }
     }
     console.table(soundArrays[0]);
