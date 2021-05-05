@@ -19,8 +19,8 @@ let respArrays = soundArrays;
 function preload(){
     let mode = 0;
     let codes = ["FL","FR","DL","DR"];
+    let i = 0;
     while(true){
-        i = 0;
         try {
             soundArrays[i/2][i%2] = new Howl({ src : [`sounds/${codes[i]+"_"+i}.mp3`]});
             i = i + 1;
