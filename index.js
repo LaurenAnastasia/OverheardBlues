@@ -24,7 +24,7 @@ function preload(){
     for (i = 0; i < codes.length; i++){
         for (j = 0; j < lims[i]; j++){
             let snd = new Howl({ src : [`sounds/${codes[i]+"_"+j}.mp3`]})
-            soundArrays[i/2][i%2].push(snd);
+            soundArrays[codes[i]].push(snd);
         }
     }
     console.table(soundArrays[0]);
@@ -94,30 +94,27 @@ function pickNewSound(){
     // pick a sound here, this is where we need to set up our algorithm
     // to 'randomly' pick a sound 
 
-    //const randomArray = Math.floor(Math.random() * numArrays);
-    const nextArray = lastArrayPlayed > 0 ? 0 : 1;
     lastArrayPlayed = lastArrayPlayed > 0 ? 0 : 1;
-    console.log(lastArrayPlayed);
     
-    let ran = Math.floor(Math.random() * soundArrays[1][nextArray].length);
+    let ran = Math.floor(Math.random() * soundArrays[codes[2+lastArrayPlayed]].length);
 
     //sound arrays has two arrays in it so first we choose which array 
     //and then which sound from that array
-    console.log("Playing dialogue: 1 "+resp+" "+ran);
-    return soundArrays[1][nextArray][ran];
+    console.log("Playing dialogue: "+codes[2+lastArrayPlayed]+" "+ran);
+    return soundArrays[codes[2+lastArrayPlayed]][ran];
     
 }
 
 function pickNewBuffer(){
     //logic to pick which buffer to select from
-    let resp = lastArrayPlayed > 0 ? 0 : 1;
+    let resp = lastArrayPlayed;
     
-    let ran = Math.floor(Math.random() * soundArrays[0][resp].length);
+    let ran = Math.floor(Math.random() * soundArrays[codes[resp]].length);
 
     //sound arrays has two arrays in it so first we choose which array 
     //and then which sound from that array
-    console.log("Playing buffer: 0 "+resp+" "+ran);
-    return soundArrays[0][resp][ran];
+    console.log("Playing buffer: "+codes[resp]+" "+ran);
+    return soundArrays[codes[resp]][ran];
 }
 
 function playSound(sound){
