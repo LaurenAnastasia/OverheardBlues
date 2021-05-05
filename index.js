@@ -1,6 +1,6 @@
 const myCanvas = { width: 600, height: 600};
 const backgroundColor = [230,220,190];
-const soundArrays = [[],[],[],[]];
+const soundArrays = [[[null],[null]],[[null],[null]]];
 //will control whether loop runs or not
 let looping = false;
 // a boolean variable to let us know if a sound is playing
@@ -23,7 +23,7 @@ function preload(){
     while(true){
         try {
             console.log("Loading: " + codes[i]+"_"+i+".mp3");
-            soundArrays[i/2][i%2] = new Howl({ src : [`sounds/${codes[i]+"_"+i}.mp3`]});
+            soundArrays[i/2][i%2].push(new Howl({ src : [`sounds/${codes[i]+"_"+i}.mp3`]}));
             i = i + 1;
             if (i >= 100){
                 console.log("Kill switch");
@@ -119,7 +119,7 @@ function pickNewSound(){
 
     //sound arrays has two arrays in it so first we choose which array 
     //and then which sound from that array
-    console.log("Playing dialogue: 0 "+resp+" "+ran);
+    console.log("Playing dialogue: 1 "+resp+" "+ran);
     return soundArrays[1][nextArray][ran];
     
 }
