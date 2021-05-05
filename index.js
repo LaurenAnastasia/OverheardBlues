@@ -22,10 +22,9 @@ function preload(){
     let i = 0;
     while(true){
         try {
-            console.log("Loading: " + codes[i]+"_"+i+".mp3");
-            soundArrays[i/2][i%2].push(new Howl({ src : [`sounds/${codes[i]+"_"+i}.mp3`]}));
+            console.log("Loading: " + codes[mode]+"_"+i+".mp3");
+            soundArrays[mode/2][mode%2].push(new Howl({ src : [`sounds/${codes[mode]+"_"+i}.mp3`]}));
             //goes [[[FL],[FR]],[[DL],[DR]]]
-            i = i + 1;
             if (i >= 100){
                 console.log("Kill switch");
                 break;
